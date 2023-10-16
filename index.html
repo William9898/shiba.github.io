@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shibe Gallery</title>
+    <style>
+        img {
+            width: 200px;
+            height: 200px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="addShibeImages()">Add Shibe Images</button>
+<div id="shibeGallery"></div>
+
+<script>
+async function addShibeImages() {
+    // Reference to the gallery div
+    var gallery = document.getElementById("shibeGallery");
+    
+    // Clear existing images in gallery
+    gallery.innerHTML = "";
+
+    try {
+        // Fetch URLs from the API
+        let response = await fetch("https://shibe.online/api/shibes?count=10");
+        let shibeImageUrls = await response.json();
+
+        // Loop through each URL and add an img element to the gallery for each
+        shibeImageUrls.forEach((imgUrl, index) => {
+            // Create new img element
+            var imgElement = document.createElement("img");
+            imgElement.src = imgUrl;
+            imgElement.alt = "Shibe Image " + (index + 1);
+
+            // Add img element to gallery
+            gallery.appendChild(imgElement);
+        });
+    } catch (error) {
+        console.error("Error fetching Shibe images:", error);
+        gallery.innerHTML = "Failed to load Shibe images.";
+    }
+}
+</script>
+
+</body>
+</html>
